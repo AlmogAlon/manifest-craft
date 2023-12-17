@@ -1,4 +1,4 @@
-package database
+package config
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ type Dbinstance struct {
 
 var DB Dbinstance
 
-func Connect() {
+func ConnectToDB() {
 	dsn := fmt.Sprintf("host=db user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Shanghai",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),

@@ -1,9 +1,10 @@
 package storage
 
 import (
-	"fmt"
-	"manifest-craft/database"
+	"manifest-craft/config"
 	"manifest-craft/models"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type PostgressStorage struct{}
@@ -15,10 +16,10 @@ func NewPostgressStorage() *PostgressStorage {
 func (s *PostgressStorage) Get(name string) *models.Manifest {
 	manifest := models.Manifest{}
 
-	fmt.Println("Getting manifest from database...")
+	log.Info("Getting manifest from database...")
 
-	if err := database.DB.Db.Preload("Components").Where("name = ?", name).First(&manifest).Error; err != nil {
-		fmt.Println("Error getting manifest from database:", err)
+	if err := config.DB.Db.Preload("Components").Where("name = ?", name).First(&manifest).Error; err != nil {
+		log.Info("Error getting manifest from database:", err)
 		return nil
 	}
 

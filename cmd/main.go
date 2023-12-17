@@ -1,28 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"manifest-craft/api"
-	"manifest-craft/database"
+	"manifest-craft/config"
 	"manifest-craft/storage"
 	"os"
 
 	"github.com/joho/godotenv"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
 	godotenv.Load()
 
-	database.Connect()
+	config.ConnectToDB()
+	config.InitLog()
 
 	listenPort := os.Getenv("LISTEN_PORT")
-	fmt.Println("LISTEN_PORT:", listenPort)
+	log.Info("LISTEN_PORT:", listenPort)
 
 	// store := storage.NewMemoryStorage()
 
 	store := storage.NewPostgressStorage()
 	server := api.NewServer(":"+listenPort, store)
 
-	fmt.Println("Starting server on", listenPort)
+	log.Info("Starting server on", listenPort)
 	server.Start()
 }
