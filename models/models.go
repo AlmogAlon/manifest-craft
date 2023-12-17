@@ -2,14 +2,19 @@ package models
 
 import "gorm.io/gorm"
 
+type BaseModel struct {
+	gorm.Model `json:"-"`
+}
+
 type Manifest struct {
-	gorm.Model
-	Name       string      `json:"name"`
+	BaseModel
+	Name       string      `json:"-"`
 	Components []Component `json:"components"`
 }
 
 type Component struct {
-	ManifestID    uint   `json:"manifest_id"`
+	BaseModel
+	ManifestID    uint   `json:"-"`
 	Source        string `json:"source"`
 	ComponentType string `json:"component_type"`
 	PlaceHolder   string `json:"placeholder"`
