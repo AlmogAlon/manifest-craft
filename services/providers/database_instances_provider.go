@@ -1,9 +1,9 @@
-package services
+package providers
 
 type DataBaseInstancesProvider struct{}
 
 func (o *DataBaseInstancesProvider) GetComponentOptions() *ComponentTypes {
 	return &ComponentTypes{
-		"ComboBox": {},
+		"ComboBox": {"Prod", "Local", "staging"},
 	}
 }

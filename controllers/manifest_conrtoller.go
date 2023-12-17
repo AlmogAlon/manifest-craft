@@ -7,6 +7,7 @@ import (
 	"manifest-craft/storage"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 type ManifestController struct {
@@ -25,6 +26,7 @@ func (h *ManifestController) Get(context *gin.Context) {
 	manifest := h.store.Get(name)
 
 	if manifest == nil {
+		log.Error("Could not get Manifest ", name)
 		context.AbortWithStatusJSON(404, gin.H{"error": "Manifest not found"})
 		return
 	}
@@ -38,6 +40,7 @@ func (h *ManifestController) Send(context *gin.Context) {
 	manifest := h.store.Get(name)
 
 	if manifest == nil {
+		log.Error("Could not get Manifest ", name)
 		context.AbortWithStatusJSON(404, gin.H{"error": "Manifest not found"})
 		return
 	}

@@ -29,5 +29,5 @@ func (h *ComponentController) GetValues(context *gin.Context) {
 
 	componentService := &services.ComponentService{}
 
-	context.JSON(200, gin.H{"values": componentService.GetOptions(component)})
+	context.JSON(200, gin.H{"values": componentService.GetComponentOptions(component)})
 }

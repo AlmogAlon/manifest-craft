@@ -2,32 +2,32 @@ package services
 
 import (
 	"manifest-craft/models"
+	"manifest-craft/services/providers"
 	"slices"
 )
 
-type ComponentTypes map[string][]string
-
-type OptionProvider interface {
-	GetComponentOptions() *ComponentTypes
+type ComponentService struct {
+	Providers map[string]providers.Provider
 }
 
-type ComponentService struct {
-	Provider map[string]OptionProvider
+func initProviders() map[string]providers.Provider {
+	return map[string]providers.Provider{
+		"databaseInstances": &providers.DataBaseInstancesProvider{},
+		"databaseRoles":     &providers.DataBaseRulesProvider{},
+	}
 }
 
 func NewComponentService() *ComponentService {
-	provider := map[string]OptionProvider{
-		"databaseInstances": &DataBaseInstancesProvider{},
-		"databaseRoles":     &DefaultOptionsProvider{},
+	return &ComponentService{
+		Providers: initProviders(),
 	}
-	return &ComponentService{Provider: provider}
 }
 
-func (s *ComponentService) GetOptions(component *models.Component) []string {
-	p, exists := s.Provider[component.Source]
+func (s *ComponentService) GetComponentOptions(component *models.Component) []string {
+	p, exists := s.Providers[component.Source]
 
 	if !exists {
-		p = &DefaultOptionsProvider{}
+		p = &providers.DefaultOptionsProvider{}
 	}
 
 	value := *p.GetComponentOptions()
@@ -35,8 +35,8 @@ func (s *ComponentService) GetOptions(component *models.Component) []string {
 	return value[component.ComponentType]
 }
 
-func (s *ComponentService) isValidValue(component *models.Component, v string) bool {
-	options := s.GetOptions(component)
+func (s *ComponentService) IsValidValue(component *models.Component, v string) bool {
+	options := s.GetComponentOptions(component)
 
 	if len(options) == 0 {
 		return component.InputType == "String"
