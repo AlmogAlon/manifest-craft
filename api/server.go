@@ -21,7 +21,7 @@ func NewServer(listenPort string, store storage.Storage) *Server {
 func (s *Server) Start() error {
 	router := gin.Default()
 
-	routes.FormRoute(router, s.store)
+	routes.ManifestRoute(router, s.store)
 
 	return router.Run(s.listenPort)
 }

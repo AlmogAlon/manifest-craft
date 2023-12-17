@@ -25,3 +25,16 @@ func (s *PostgressStorage) Get(name string) *models.Manifest {
 
 	return &manifest
 }
+
+func (s *PostgressStorage) GetComponent(source string) *models.Component {
+	component := models.Component{}
+
+	log.Info("Getting components from database...")
+
+	if err := config.DB.Db.Where("source = ?", source).First(&component).Error; err != nil {
+		log.Info("Error getting components from database:", err)
+		return nil
+	}
+
+	return &component
+}

@@ -1,19 +1,21 @@
 package storage
 
-import "manifest-craft/models"
+import (
+	"manifest-craft/models"
+)
 
-var data = []models.Manifest{
+var manifests = map[string]uint{
+	"databaseAccess": 1,
+}
+
+var components = []models.Component{
 	{
-		Name: "databaseAccess",
-		Components: []models.Component{
-			{
-				Source:        "reason",
-				Label:         "reason",
-				ComponentType: "TextField",
-				PlaceHolder:   "Enter your Reason for access",
-				InputType:     "String",
-			},
-		},
+		ManifestID:    1,
+		Source:        "reason",
+		Label:         "reason",
+		ComponentType: "ComboBox",
+		PlaceHolder:   "Enter your Reason for access",
+		InputType:     "String",
 	},
 }
 
@@ -24,8 +26,26 @@ func NewMemoryStorage() *MemoryStorage {
 }
 
 func (s *MemoryStorage) Get(name string) *models.Manifest {
-	for _, value := range data {
-		if value.Name == name {
+	manifestId, exists := manifests[name]
+
+	if !exists {
+		return nil
+	}
+
+	manifest := &models.Manifest{Name: name}
+
+	for _, value := range components {
+		if value.ManifestID == manifestId {
+			manifest.Components = append(manifest.Components, value)
+		}
+
+	}
+	return manifest
+}
+
+func (s *MemoryStorage) GetComponent(source string) *models.Component {
+	for _, value := range components {
+		if value.Source == source {
 			result := value
 			return &result
 		}

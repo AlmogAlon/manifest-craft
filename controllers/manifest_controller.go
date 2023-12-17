@@ -6,17 +6,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type FormsHandler struct {
+type ManifestHandler struct {
 	store storage.Storage
 }
 
-func NewFormsHandler(s storage.Storage) *FormsHandler {
-	return &FormsHandler{
+func NewManifestHandler(s storage.Storage) *ManifestHandler {
+	return &ManifestHandler{
 		store: s,
 	}
 }
 
-func (h *FormsHandler) Get(context *gin.Context) {
+func (h *ManifestHandler) Get(context *gin.Context) {
 	name := context.Param("name")
 
 	manifest := h.store.Get(name)
