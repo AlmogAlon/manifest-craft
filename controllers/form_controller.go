@@ -21,5 +21,10 @@ func (h *FormsHandler) Get(context *gin.Context) {
 
 	manifest := h.store.Get(name)
 
+	if manifest == nil {
+		context.AbortWithStatusJSON(404, gin.H{"error": "Manifest not found"})
+		return
+	}
+
 	context.JSON(200, manifest)
 }
