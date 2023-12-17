@@ -8,26 +8,26 @@ import (
 )
 
 type ComponentController struct {
-	store storage.Storage
+	store    storage.Storage
+	services *services.Services
 }
 
-func NewComponentController(s storage.Storage) *ComponentController {
+func NewComponentController(store storage.Storage, services *services.Services) *ComponentController {
 	return &ComponentController{
-		store: s,
+		store:    store,
+		services: services,
 	}
 }
 
-func (h *ComponentController) GetValues(context *gin.Context) {
+func (c *ComponentController) GetValues(context *gin.Context) {
 	source := context.Param("source")
 
-	component := h.store.GetComponent(source)
+	component := c.store.GetComponent(source)
 
 	if component == nil {
 		context.AbortWithStatusJSON(404, gin.H{"error": "Component not found"})
 		return
 	}
 
-	componentService := &services.ComponentService{}
-
-	context.JSON(200, gin.H{"values": componentService.GetComponentOptions(component)})
+	context.JSON(200, gin.H{"values": c.services.Component.GetComponentOptions(component)})
 }

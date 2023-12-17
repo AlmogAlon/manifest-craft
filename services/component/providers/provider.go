@@ -1,5 +1,7 @@
 package providers
 
+type ComponentTypes map[string][]string
+
 type DefaultOptionsProvider struct{}
 
 func (o *DefaultOptionsProvider) GetComponentOptions() *ComponentTypes {
@@ -9,4 +11,8 @@ func (o *DefaultOptionsProvider) GetComponentOptions() *ComponentTypes {
 		"RadioButton":   {},
 		"MultiComboBox": {},
 	}
+}
+
+type Provider interface {
+	GetComponentOptions() *ComponentTypes
 }

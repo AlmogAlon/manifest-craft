@@ -2,6 +2,7 @@ package api
 
 import (
 	"manifest-craft/routes"
+	"manifest-craft/services"
 	"manifest-craft/storage"
 
 	"github.com/gin-gonic/gin"
@@ -20,9 +21,10 @@ func NewServer(listenPort string, store storage.Storage) *Server {
 
 func (s *Server) Start() error {
 	router := gin.Default()
+	appServices := services.Get()
 
-	routes.ManifestRoute(router, s.store)
-	routes.ComponentRoute(router, s.store)
+	routes.ManifestRoute(router, s.store, appServices)
+	routes.ComponentRoute(router, s.store, appServices)
 
 	return router.Run(s.listenPort)
 }

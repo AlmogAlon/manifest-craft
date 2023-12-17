@@ -1,14 +1,10 @@
-package services
+package component
 
 import (
 	"manifest-craft/models"
-	"manifest-craft/services/providers"
+	"manifest-craft/services/component/providers"
 	"slices"
 )
-
-type ComponentService struct {
-	Providers map[string]providers.Provider
-}
 
 func initProviders() map[string]providers.Provider {
 	return map[string]providers.Provider{
@@ -17,13 +13,17 @@ func initProviders() map[string]providers.Provider {
 	}
 }
 
-func NewComponentService() *ComponentService {
-	return &ComponentService{
+type Service struct {
+	Providers map[string]providers.Provider
+}
+
+func NewComponentService() *Service {
+	return &Service{
 		Providers: initProviders(),
 	}
 }
 
-func (s *ComponentService) GetComponentOptions(component *models.Component) []string {
+func (s *Service) GetComponentOptions(component *models.Component) []string {
 	p, exists := s.Providers[component.Source]
 
 	if !exists {
@@ -35,7 +35,7 @@ func (s *ComponentService) GetComponentOptions(component *models.Component) []st
 	return value[component.ComponentType]
 }
 
-func (s *ComponentService) IsValidValue(component *models.Component, v string) bool {
+func (s *Service) isValidValue(component *models.Component, v string) bool {
 	options := s.GetComponentOptions(component)
 
 	if len(options) == 0 {
@@ -43,4 +43,16 @@ func (s *ComponentService) IsValidValue(component *models.Component, v string) b
 	}
 
 	return component.InputType == "String" && slices.Contains(options, v)
+}
+
+func (s *Service) Validate(c []models.Component, payload map[string]string) bool {
+	for _, c := range c {
+		value, exists := payload[c.Source]
+
+		if !exists || !s.isValidValue(&c, value) {
+			return false
+		}
+	}
+
+	return true
 }

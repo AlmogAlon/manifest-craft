@@ -11,35 +11,37 @@ import (
 )
 
 type ManifestController struct {
-	store storage.Storage
+	store    storage.Storage
+	services *services.Services
 }
 
-func NewManifestController(s storage.Storage) *ManifestController {
+func NewManifestController(storage storage.Storage, services *services.Services) *ManifestController {
 	return &ManifestController{
-		store: s,
+		store:    storage,
+		services: services,
 	}
 }
 
-func (h *ManifestController) Get(context *gin.Context) {
+func (c *ManifestController) Get(context *gin.Context) {
 	name := context.Param("name")
 
-	manifest := h.store.Get(name)
+	model := c.store.Get(name)
 
-	if manifest == nil {
+	if model == nil {
 		log.Error("Could not get Manifest ", name)
 		context.AbortWithStatusJSON(404, gin.H{"error": "Manifest not found"})
 		return
 	}
 
-	context.JSON(200, manifest)
+	context.JSON(200, model)
 }
 
-func (h *ManifestController) Send(context *gin.Context) {
+func (c *ManifestController) Send(context *gin.Context) {
 	name := context.Param("name")
 
-	manifest := h.store.Get(name)
+	model := c.store.Get(name)
 
-	if manifest == nil {
+	if model == nil {
 		log.Error("Could not get Manifest ", name)
 		context.AbortWithStatusJSON(404, gin.H{"error": "Manifest not found"})
 		return
@@ -47,10 +49,13 @@ func (h *ManifestController) Send(context *gin.Context) {
 
 	bodyAsByteArray, _ := ioutil.ReadAll(context.Request.Body)
 	jsonMap := make(map[string]string)
-	json.Unmarshal(bodyAsByteArray, &jsonMap)
+	err := json.Unmarshal(bodyAsByteArray, &jsonMap)
+	if err != nil {
+		log.Error("Could not get request info")
+		context.AbortWithStatusJSON(404, gin.H{"error": "bad body given"})
+		return
+	}
 
-	manifestService := &services.ManifestService{}
-
-	context.JSON(200, gin.H{"status": manifestService.Validate(manifest, jsonMap)})
+	context.JSON(200, gin.H{"status": c.services.Component.Validate(model.Components, jsonMap)})
 
 }

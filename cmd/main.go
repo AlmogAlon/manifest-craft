@@ -11,7 +11,10 @@ import (
 )
 
 func main() {
-	godotenv.Load()
+	err := godotenv.Load()
+	if err != nil {
+		return
+	}
 
 	// config.ConnectToDB()
 	config.InitLog()
@@ -25,5 +28,9 @@ func main() {
 	server := api.NewServer(":"+listenPort, store)
 
 	log.Info("Starting server on", listenPort)
-	server.Start()
+	err = server.Start()
+
+	if err != nil {
+		return
+	}
 }
