@@ -2,10 +2,10 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"manifest-craft/models"
 	"os"
 
+	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

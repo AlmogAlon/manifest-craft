@@ -13,15 +13,15 @@ import (
 func main() {
 	godotenv.Load()
 
-	config.ConnectToDB()
+	// config.ConnectToDB()
 	config.InitLog()
 
 	listenPort := os.Getenv("LISTEN_PORT")
 	log.Info("LISTEN_PORT:", listenPort)
 
-	// store := storage.NewMemoryStorage()
+	store := storage.NewMemoryStorage()
 
-	store := storage.NewPostgressStorage()
+	// store := storage.NewPostgressStorage()
 	server := api.NewServer(":"+listenPort, store)
 
 	log.Info("Starting server on", listenPort)

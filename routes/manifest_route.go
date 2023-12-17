@@ -8,7 +8,8 @@ import (
 )
 
 func ManifestRoute(router *gin.Engine, store storage.Storage) {
-	manifestHandler := controllers.NewManifestHandler(store)
+	manifestController := controllers.NewManifestController(store)
 
-	router.GET("/form/:name", manifestHandler.Get)
+	router.GET("/form/:name", manifestController.Get)
+	router.POST("/form/:name", manifestController.Send)
 }

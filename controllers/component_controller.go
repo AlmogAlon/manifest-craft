@@ -7,17 +7,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ComponentHandler struct {
+type ComponentController struct {
 	store storage.Storage
 }
 
-func NewComponentHandler(s storage.Storage) *ComponentHandler {
-	return &ComponentHandler{
+func NewComponentController(s storage.Storage) *ComponentController {
+	return &ComponentController{
 		store: s,
 	}
 }
 
-func (h *ComponentHandler) GetValues(context *gin.Context) {
+func (h *ComponentController) GetValues(context *gin.Context) {
 	source := context.Param("source")
 
 	component := h.store.GetComponent(source)

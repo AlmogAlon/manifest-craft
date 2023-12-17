@@ -8,7 +8,7 @@ import (
 )
 
 func ComponentRoute(router *gin.Engine, store storage.Storage) {
-	componentHandler := controllers.NewComponentHandler(store)
+	componentController := controllers.NewComponentController(store)
 
-	router.GET("/values/:source", componentHandler.GetValues)
+	router.GET("/values/:source", componentController.GetValues)
 }
