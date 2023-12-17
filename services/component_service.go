@@ -5,26 +5,41 @@ import (
 	"slices"
 )
 
-var TypeOptions = map[string][]string{
-	"TextField":   {},
-	"ComboBox":    {"Read Only", "Read write", "Full Admin"},
-	"RadioButton": {},
+type ComponentTypes map[string][]string
+
+type OptionProvider interface {
+	GetComponentOptions() *ComponentTypes
 }
 
-type ComponentService struct{}
+type ComponentService struct {
+	Provider map[string]OptionProvider
+}
+
+func NewComponentService() *ComponentService {
+	provider := map[string]OptionProvider{
+		"databaseInstances": &DataBaseInstancesProvider{},
+		"databaseRoles":     &DefaultOptionsProvider{},
+	}
+	return &ComponentService{Provider: provider}
+}
 
 func (s *ComponentService) GetOptions(component *models.Component) []string {
-	return TypeOptions[component.ComponentType]
+	p, exists := s.Provider[component.Source]
+
+	if !exists {
+		p = &DefaultOptionsProvider{}
+	}
+
+	value := *p.GetComponentOptions()
+
+	return value[component.ComponentType]
 }
 
 func (s *ComponentService) isValidValue(component *models.Component, v string) bool {
-	options, ok := TypeOptions[component.ComponentType]
-	if !ok {
-		return false
-	}
+	options := s.GetOptions(component)
 
 	if len(options) == 0 {
-		return true
+		return component.InputType == "String"
 	}
 
 	return component.InputType == "String" && slices.Contains(options, v)

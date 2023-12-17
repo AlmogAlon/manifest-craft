@@ -5,10 +5,35 @@ import (
 )
 
 var manifests = map[string]uint{
-	"databaseAccess": 1,
+	"databaseAccess": 0,
+	"cloudAccess":    1,
 }
 
 var components = []models.Component{
+	{
+		ManifestID:    0,
+		Source:        "reason",
+		Label:         "reason",
+		ComponentType: "TextField",
+		PlaceHolder:   "Enter your Reason for access",
+		InputType:     "String",
+	},
+	{
+		ManifestID:    0,
+		Source:        "databaseInstances",
+		Label:         "Database Instances",
+		ComponentType: "ComboBox",
+		PlaceHolder:   "choose database",
+		InputType:     "String",
+	},
+	{
+		ManifestID:    0,
+		Source:        "databaseRoles",
+		Label:         "Database Roles",
+		ComponentType: "ComboBox",
+		PlaceHolder:   "choose a role",
+		InputType:     "String",
+	},
 	{
 		ManifestID:    1,
 		Source:        "reason",
@@ -19,19 +44,17 @@ var components = []models.Component{
 	},
 	{
 		ManifestID:    1,
-		Source:        "databaseInstances",
-		Label:         "Database Instances",
-		ComponentType: "ComboBox",
-		PlaceHolder:   "choose database",
+		Source:        "accounts",
+		Label:         "accounts",
+		ComponentType: "MultiComboBox",
+		PlaceHolder:   "Enter your Accounts",
 		InputType:     "String",
 	},
 	{
 		ManifestID:    1,
-		Source:        "databaseRoles",
-		Label:         "Database Roles",
+		Source:        "user",
+		Label:         "user",
 		ComponentType: "ComboBox",
-		PlaceHolder:   "choose a role",
-		InputType:     "String",
 	},
 }
 
