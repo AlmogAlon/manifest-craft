@@ -22,6 +22,7 @@ func (s *Server) Start() error {
 	router := gin.Default()
 
 	routes.ManifestRoute(router, s.store)
+	routes.ComponentRoute(router, s.store)
 
 	return router.Run(s.listenPort)
 }

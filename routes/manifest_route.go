@@ -9,8 +9,6 @@ import (
 
 func ManifestRoute(router *gin.Engine, store storage.Storage) {
 	manifestHandler := controllers.NewManifestHandler(store)
-	componentHandler := controllers.NewComponentHandler(store)
 
 	router.GET("/form/:name", manifestHandler.Get)
-	router.GET("/values/:source", componentHandler.GetValues)
 }
