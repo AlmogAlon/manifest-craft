@@ -22,9 +22,16 @@ To run the application locally:
 - execute these commands:
     ```bash
       cd manifest-craft
+      go mod download 
       go run cmd/main.go
     ```
-
+  
+## Running tests
+- execute these commands:
+    ```bash
+      cd manifest-craft
+      go test ./...
+    ```
 To run the services using docker-compose:
 - execute these commands: 
 

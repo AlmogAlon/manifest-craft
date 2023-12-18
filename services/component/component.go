@@ -38,11 +38,13 @@ func (s *Service) GetComponentOptions(component *models.Component) []string {
 func (s *Service) isValidValue(component *models.Component, v string) bool {
 	options := s.GetComponentOptions(component)
 
+	componentIsString := component.InputType == "String"
+
 	if len(options) == 0 {
-		return component.InputType == "String"
+		return componentIsString
 	}
 
-	return component.InputType == "String" && slices.Contains(options, v)
+	return componentIsString && slices.Contains(options, v)
 }
 
 func (s *Service) Validate(c []models.Component, payload map[string]string) bool {
