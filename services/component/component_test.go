@@ -7,15 +7,32 @@ import (
 )
 
 func TestGetComponentOptions(t *testing.T) {
-	server := NewComponentService()
-	component := &models.Component{
-		Source:        "databaseInstances",
-		ComponentType: "ComboBox",
+	type testCase struct {
+		input *models.Component
+		want  []string
 	}
 
-	expectedValues := []string{"Prod", "Local", "staging"}
+	tests := []testCase{
+		{
+			input: &models.Component{
+				Source:        "databaseInstances",
+				ComponentType: "ComboBox",
+			},
+			want: []string{"Prod", "Local", "staging"},
+		},
+		{
+			input: &models.Component{
+				Source:        "non-exist",
+				ComponentType: "TextField",
+			},
+			want: []string{},
+		},
+	}
 
-	componentOptions := server.GetComponentOptions(component)
+	server := NewComponentService()
+	for _, tc := range tests {
+		got := server.GetComponentOptions(tc.input)
+		assert.Equal(t, tc.want, got)
+	}
 
-	assert.Equal(t, expectedValues, componentOptions)
 }
