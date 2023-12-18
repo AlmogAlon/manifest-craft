@@ -54,14 +54,13 @@ func TestGetValues(t *testing.T) {
 		assert.Equal(t, tc.statusCode, w.Code)
 
 		if tc.statusCode != 200 {
-			return
+			continue
 		}
 
 		jsonMap := make(map[string][]string)
 		err := json.Unmarshal(w.Body.Bytes(), &jsonMap)
-		if err != nil {
-			t.Failed()
-		}
+
+		assert.NoError(t, err)
 		assert.Equal(t, tc.want, jsonMap["values"])
 	}
 }
