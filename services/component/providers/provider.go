@@ -16,3 +16,10 @@ func (o *DefaultOptionsProvider) GetComponentOptions() *ComponentTypes {
 type Provider interface {
 	GetComponentOptions() *ComponentTypes
 }
+
+func InitProviders() map[string]Provider {
+	return map[string]Provider{
+		"databaseInstances": &DataBaseInstancesProvider{},
+		"databaseRoles":     &DataBaseRulesProvider{},
+	}
+}

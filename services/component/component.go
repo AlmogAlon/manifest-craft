@@ -6,20 +6,13 @@ import (
 	"slices"
 )
 
-func initProviders() map[string]providers.Provider {
-	return map[string]providers.Provider{
-		"databaseInstances": &providers.DataBaseInstancesProvider{},
-		"databaseRoles":     &providers.DataBaseRulesProvider{},
-	}
-}
-
 type Service struct {
 	Providers map[string]providers.Provider
 }
 
 func NewComponentService() *Service {
 	return &Service{
-		Providers: initProviders(),
+		Providers: providers.InitProviders(),
 	}
 }
 
