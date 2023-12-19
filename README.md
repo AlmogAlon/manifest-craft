@@ -45,5 +45,7 @@ To run the services using docker-compose:
 - You can currently only add in-mem manifests + components in ```storage/memory.go``` file
 
 
-- Newly created Component type (source) need to be created under ```services/components/providers/``` directory 
-by implementing the Provider interface and register it (name to provider mapping) to ```providers.InitProviders``` function
+- Newly created Component type (source) need to be created under ```services/components/providers/``` directory:
+
+  - implement the Provider interface 
+  - register it (source name -> provider) to ```providers.InitProviders``` function
