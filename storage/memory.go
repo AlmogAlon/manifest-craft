@@ -57,13 +57,13 @@ var components = []models.Component{
 		ComponentType: "ComboBox",
 		InputType:     "String",
 	},
-	{
-		ManifestID:    1,
-		Source:        "countries",
-		Label:         "countries",
-		ComponentType: "ComboBox",
-		InputType:     "String",
-	},
+	//{
+	//	ManifestID:    1,
+	//	Source:        "countries",
+	//	Label:         "countries",
+	//	ComponentType: "ComboBox",
+	//	InputType:     "String",
+	//},
 }
 
 type MemoryStorage struct{}
