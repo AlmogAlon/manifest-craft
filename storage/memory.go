@@ -55,6 +55,14 @@ var components = []models.Component{
 		Source:        "user",
 		Label:         "user",
 		ComponentType: "ComboBox",
+		InputType:     "String",
+	},
+	{
+		ManifestID:    1,
+		Source:        "countries",
+		Label:         "countries",
+		ComponentType: "ComboBox",
+		InputType:     "String",
 	},
 }
 

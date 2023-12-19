@@ -21,5 +21,9 @@ func InitProviders() map[string]Provider {
 	return map[string]Provider{
 		"databaseInstances": &DataBaseInstancesProvider{},
 		"databaseRoles":     &DataBaseRulesProvider{},
+		"users":             &UsersProvider{},
+		"accounts":          &AccountsProvider{},
+
+		"countries": &CountriesProvider{},
 	}
 }
