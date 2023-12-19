@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
-	"io/ioutil"
 	"manifest-craft/services"
 	"manifest-craft/storage"
 
@@ -47,19 +45,17 @@ func (c *ManifestController) Send(context *gin.Context) {
 		return
 	}
 
-	bodyAsByteArray, _ := ioutil.ReadAll(context.Request.Body)
-	jsonMap := make(map[string]string)
-	err := json.Unmarshal(bodyAsByteArray, &jsonMap)
-	if err != nil {
+	var jsonData map[string]interface{}
+	if err := context.ShouldBindJSON(&jsonData); err != nil {
 		log.Error("Could not get request info")
 		context.AbortWithStatusJSON(404, gin.H{"error": "bad body given"})
 		return
 	}
-	value, err := c.services.Component.Validate(model.Components, jsonMap)
+	value, err := c.services.Component.Validate(model.Components, jsonData)
 
 	if err != nil {
 		log.Error("Could not get request info")
-		context.AbortWithStatusJSON(500, gin.H{"error": "could not process requesrt"})
+		context.AbortWithStatusJSON(500, gin.H{"error": err.Error()})
 		return
 	}
 	context.JSON(200, gin.H{"status": value})
