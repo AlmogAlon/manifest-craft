@@ -55,7 +55,13 @@ func (c *ManifestController) Send(context *gin.Context) {
 		context.AbortWithStatusJSON(404, gin.H{"error": "bad body given"})
 		return
 	}
+	value, err := c.services.Component.Validate(model.Components, jsonMap)
 
-	context.JSON(200, gin.H{"status": c.services.Component.Validate(model.Components, jsonMap)})
+	if err != nil {
+		log.Error("Could not get request info")
+		context.AbortWithStatusJSON(500, gin.H{"error": "could not process requesrt"})
+		return
+	}
+	context.JSON(200, gin.H{"status": value})
 
 }

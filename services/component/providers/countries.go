@@ -12,10 +12,11 @@ type APIResponse struct {
 	Data map[string]map[string]string
 }
 
-func (o *CountriesProvider) fetch() []string {
+func (o *CountriesProvider) fetch() ([]string, error) {
 	res, err := http.Get("https://api.first.org/data/v1/countries")
 	if err != nil {
-		panic(err)
+		log.Error("could not get countries")
+		return []string{}, err
 	}
 	defer res.Body.Close()
 
@@ -25,7 +26,7 @@ func (o *CountriesProvider) fetch() []string {
 
 	if err != nil {
 		log.Error("could not get countries")
-		return nil
+		return []string{}, err
 	}
 
 	v := make([]string, 0, len(response.Data))
@@ -34,11 +35,13 @@ func (o *CountriesProvider) fetch() []string {
 		v = append(v, value["country"])
 	}
 
-	return v
+	return v, nil
 }
 
-func (o *CountriesProvider) GetComponentOptions() *ComponentTypes {
+func (o *CountriesProvider) GetComponentOptions() (*ComponentTypes, error) {
+	res, err := o.fetch()
+
 	return &ComponentTypes{
-		"ComboBox": o.fetch(),
-	}
+		"ComboBox": res,
+	}, err
 }

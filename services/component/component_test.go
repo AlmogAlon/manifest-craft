@@ -31,7 +31,7 @@ func TestGetComponentOptions(t *testing.T) {
 
 	server := NewComponentService()
 	for _, tc := range tests {
-		got := server.GetComponentOptions(tc.input)
+		got, _ := server.GetComponentOptions(tc.input)
 		assert.Equal(t, tc.want, got)
 	}
 

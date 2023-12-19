@@ -4,17 +4,17 @@ type ComponentTypes map[string][]string
 
 type DefaultOptionsProvider struct{}
 
-func (o *DefaultOptionsProvider) GetComponentOptions() *ComponentTypes {
+func (o *DefaultOptionsProvider) GetComponentOptions() (*ComponentTypes, error) {
 	return &ComponentTypes{
 		"TextField":     {},
 		"ComboBox":      {},
 		"RadioButton":   {},
 		"MultiComboBox": {},
-	}
+	}, nil
 }
 
 type Provider interface {
-	GetComponentOptions() *ComponentTypes
+	GetComponentOptions() (*ComponentTypes, error)
 }
 
 func InitProviders() map[string]Provider {

@@ -28,6 +28,10 @@ func (c *ComponentController) GetValues(context *gin.Context) {
 		context.AbortWithStatusJSON(404, gin.H{"error": "Component not found"})
 		return
 	}
-
-	context.JSON(200, gin.H{"values": c.services.Component.GetComponentOptions(component)})
+	values, err := c.services.Component.GetComponentOptions(component)
+	if err != nil {
+		context.AbortWithStatusJSON(500, gin.H{"error": "an error occured"})
+		return
+	}
+	context.JSON(200, gin.H{"values": values})
 }
