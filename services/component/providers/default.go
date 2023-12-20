@@ -4,6 +4,9 @@ type DefaultOptionsProvider struct{}
 
 func (o *DefaultOptionsProvider) GetComponentOptions() (*ComponentTypes, error) {
 	return &ComponentTypes{
-		"ComboBox": {},
+		"ComboBox":      {},
+		"TextField":     {},
+		"RadioButton":   {},
+		"MultiComboBox": {},
 	}, nil
 }
