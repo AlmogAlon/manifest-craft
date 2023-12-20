@@ -42,6 +42,6 @@ func (o *CountriesProvider) GetComponentOptions() (*ComponentTypes, error) {
 	res, err := o.fetch()
 
 	return &ComponentTypes{
-		"ComboBox": res,
+		"MultiComboBox": res,
 	}, err
 }
