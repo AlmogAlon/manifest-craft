@@ -1,11 +1,11 @@
 package api
 
 import (
+	"github.com/gin-gonic/gin"
+	"manifest-craft/api/middlewares"
 	"manifest-craft/routes"
 	"manifest-craft/services"
 	"manifest-craft/storage"
-
-	"github.com/gin-gonic/gin"
 )
 
 type Server struct {
@@ -21,6 +21,9 @@ func NewServer(listenPort string, store storage.Storage) *Server {
 
 func (s *Server) Start() error {
 	router := gin.Default()
+
+	middlewares.Use(router)
+
 	appServices := services.Get()
 
 	routes.ManifestRoute(router, s.store, appServices)
