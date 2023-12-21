@@ -5,11 +5,11 @@ import (
 )
 
 type Services struct {
-	Component *component.Service
+	Component component.Interface
 }
 
-func Get() *Services {
-	return &Services{
+func Get() Services {
+	return Services{
 		Component: component.NewComponentService(),
 	}
 }

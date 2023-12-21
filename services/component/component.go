@@ -13,10 +13,15 @@ type Service struct {
 	Providers map[string]providers.Provider
 }
 
-func NewComponentService() *Service {
+func NewComponentService() Interface {
 	return &Service{
 		Providers: providers.InitProviders(),
 	}
+}
+
+type Interface interface {
+	Validate(c []models.Component, payload map[string]any) (bool, error)
+	GetComponentOptions(component *models.Component) ([]string, error)
 }
 
 func (s *Service) isCorrectType(component *models.Component, k reflect.Kind) bool {

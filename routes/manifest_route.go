@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ManifestRoute(router *gin.Engine, store storage.Storage, services *services.Services) {
+func ManifestRoute(router *gin.Engine, store storage.Storage, services services.Services) {
 	manifestController := controllers.NewManifestController(store, services)
 
 	router.GET("/form/:name", manifestController.Get)

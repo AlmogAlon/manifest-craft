@@ -9,10 +9,10 @@ import (
 
 type ComponentController struct {
 	store    storage.Storage
-	services *services.Services
+	services services.Services
 }
 
-func NewComponentController(store storage.Storage, services *services.Services) *ComponentController {
+func NewComponentController(store storage.Storage, services services.Services) *ComponentController {
 	return &ComponentController{
 		store:    store,
 		services: services,
@@ -25,12 +25,13 @@ func (c *ComponentController) GetValues(context *gin.Context) {
 	component := c.store.GetComponent(source)
 
 	if component == nil {
-		context.AbortWithStatusJSON(404, gin.H{"error": "Component not found"})
+		Abort(context, 404, "Component not found")
 		return
 	}
 	values, err := c.services.Component.GetComponentOptions(component)
+
 	if err != nil {
-		context.AbortWithStatusJSON(500, gin.H{"error": "an error occured"})
+		Abort(context, 500, "an error occurred")
 		return
 	}
 	context.JSON(200, gin.H{"values": values})

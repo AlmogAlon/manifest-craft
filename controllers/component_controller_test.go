@@ -3,22 +3,17 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"manifest-craft/services"
 	"manifest-craft/storage"
+	"manifest-craft/tests"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-func SetUpRouter() *gin.Engine {
-	router := gin.Default()
-	return router
-}
-
 func TestGetValues(t *testing.T) {
-	r := SetUpRouter()
+	r := tests.SetUpRouter()
 	store := storage.NewMemoryStorage()
 	s := services.Get()
 
@@ -30,7 +25,7 @@ func TestGetValues(t *testing.T) {
 		want       []string
 	}
 
-	tests := []testCase{
+	cases := []testCase{
 		{
 			source:     "databaseInstances",
 			statusCode: 200,
@@ -45,7 +40,7 @@ func TestGetValues(t *testing.T) {
 
 	r.GET("/values/:source", componentController.GetValues)
 
-	for _, tc := range tests {
+	for _, tc := range cases {
 
 		req, _ := http.NewRequest("GET", fmt.Sprintf("/values/%s", tc.source), nil)
 		w := httptest.NewRecorder()
